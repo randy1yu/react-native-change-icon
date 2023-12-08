@@ -2,6 +2,7 @@ package com.reactnativechangeicon;
 
 import androidx.annotation.NonNull;
 
+import android.content.Intent;
 import android.app.Activity;
 import android.app.Application;
 import android.content.pm.PackageManager;
@@ -93,6 +94,7 @@ public class ChangeIconModule extends ReactContextBaseJavaModule implements Appl
         this.componentClass = activeClass;
         activity.getApplication().registerActivityLifecycleCallbacks(this);
         iconChanged = true;
+        activity.finish();
     }
 
     private void completeIconChange() {
@@ -109,6 +111,9 @@ public class ChangeIconModule extends ReactContextBaseJavaModule implements Appl
                 PackageManager.DONT_KILL_APP));
         classesToKill.clear();
         iconChanged = false;
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(this.packageName, this.componentClass));
+        activity.startActivity(intent);
     }
 
     @Override
